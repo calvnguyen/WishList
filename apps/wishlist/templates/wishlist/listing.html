@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+      <meta charset="UTF-8">
+      <title>My Wish List</title>
+      {% load staticfiles %}
+      <link rel="stylesheet" href="{% static 'wishlist/css/wishlist.css' %}"media="screen" title="no title"  charset="utf-8">
+
+  </head>
+  <body>
+    <h1 id="header-text">My Wish List - Welcome!</h1>
+    <div id="result-container">
+      {% if request.session.status == 'logged' %}      
+       <h3 id="div-header">Logged in as <span id="result-text"> {{ user_account.name }}</span>!!!</h3>
+      {% elif request.session.status == 'registered' %}
+         <h3 id="div-header">Registered successfully as <span id="result-text"> {{ user_account.name }}</span>!!!</h3>
+      {% endif %}
+
+      <form action='/logout'>
+        <input id="submit-button" type="submit" value="Logout">
+      </form>
+        {% if messages %}
+          <ul class="validation-error">
+          {% for message in messages %}
+           <li{% if message.tags %} 
+              class="{{ message.tags }}"
+              {% endif %} id="validation-text">
+            {{ message }}</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+
+      <h3 id="div-header">Your Wish list:</h3>
+      <table id="wish-table">
+        <thead>
+          <tr>
+            <th class="table-heading">Item</th>
+            <th class="table-heading">Added by</th>
+            <th class="table-heading">Date Added</th>
+            <th class="table-heading">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          {% for wish in user_wish_listing %}
+            <td class="table-data"><a href="/wish_items/{{ wish.id }}">{{ wish.item }}</a></td>
+              <td class="table-data">{{ wish.creator }}</td>
+            <td id="table-data2">{{ wish.created_at|date:"M d Y" }}</td>
+            {% if user_account.name != wish.creator %}
+              <td class="table-data"><a id="remove" href="/wish_items/remove_wish/{{ wish.id }}">Remove from my Wishlist</a></td>
+            {% else %}
+              <td class="table-data"><a id="remove" href="/wish_items/delete_wish/{{ wish.id }}">Delete</a></td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <h3 id="div-header">Other Users' Wish list:</h3>
+      <table id="wish-table">
+        <thead>
+          <tr>
+            <th class="table-heading">Item</th>
+            <th class="table-heading">Added by</th>
+            <th class="table-heading">Date Added</th>
+            <th class="table-heading">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          {% for wish in others_wish_listing %}
+            <td class="table-data">{{ wish.item }}</td>
+            <td class="table-data">{{ wish.creator }}</td>
+            <td id="table-data2">{{ wish.created_at|date:"M d Y" }}</td>
+            <td class="table-data"><a id="remove" href="/wish_items/add_to_list/{{ wish.id }}">Add to my Wishlist</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+
+
+      <form id="registration-form" action='/wish_items/add'>
+        <input id="submit-button2" type="submit" value="Add item">
+      </form>
+
+
+
+
+    </div>
+
+	</body>
+</html>

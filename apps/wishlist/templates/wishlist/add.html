@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+      <meta charset="UTF-8">
+      <title>Add a Wish</title>
+      {% load staticfiles %}
+      <link rel="stylesheet" href="{% static 'wishlist/css/wishlist.css' %}"media="screen" title="no title"  charset="utf-8">
+
+  </head>
+  <body>
+    <h1 id="title-text">Wish List Addition</h1>
+    <form action='/logout'>
+        <input id="submit-button" type="submit" value="Logout">
+      </form>
+    <form id="registration-form" action='/listing'>
+        <input id="submit-button" type="submit" value="Home">
+      </form>
+
+    <div id="main-container">
+      <h3 id="div-header">Add a new Wish:</h3>
+      <form action="/wish_items/add" method='post'>
+        {% csrf_token %}
+         <ul class="validation-error">
+          {% for message in messages %}
+            {% if 'new-item-error' in message.tags %}<li id="validation-text">{{ message }}</li>{% endif %}
+          {% endfor %}
+        </ul>
+        <label class="form-label">
+          Item/Product: <input id="name-text" type="text" name="item" placeholder="enter a wish item">
+        </label>
+
+        <input id="submit-button" type="submit" value="Add">
+      </form>
+
+
+
+      
+    </div>
+
+
+	</body>
+</html>
