@@ -69,7 +69,7 @@
         <tbody>
           <tr>
           {% for wish in others_wish_listing %}
-            <td class="table-data">{{ wish.item }}</td>
+            <td class="table-data"><a href="/wish_items/{{ wish.id }}">{{ wish.item }}</a></td>
             <td class="table-data">{{ wish.creator }}</td>
             <td id="table-data2">{{ wish.created_at|date:"M d Y" }}</td>
             <td class="table-data"><a id="remove" href="/wish_items/add_to_list/{{ wish.id }}">Add to my Wishlist</a></td>
@@ -83,6 +83,8 @@
       <form id="registration-form" action='/wish_items/add'>
         <input id="submit-button2" type="submit" value="Add item">
       </form>
+
+      <p id="div-header">Created by Calvin Nguyen</p>
 
 
 
